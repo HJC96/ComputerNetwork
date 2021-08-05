@@ -1,7 +1,7 @@
 # ComputerNetwork
 
-**소켓 프로그래밍 1 (TCP server, client) 
-**
+## 소켓 프로그래밍 1 (TCP server, client) 
+
 1. Server에서는 단지 client에서 전송한 데이터를 화면에 출력시킨다.
 
 2. client에서는 server와 connection establish를 한 다음, 즉시 10 바이트 데이터 3개를 3번의 send() 함수를 이용하여 server에 전송한다. (예를 들면 0123456789, ABCDEFGHIJ, KLMNOPQRST)
