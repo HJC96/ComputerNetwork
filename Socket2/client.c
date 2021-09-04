@@ -34,15 +34,27 @@ int main(int argc, char** argv)
     if (connect(sock, (struct sockaddr*)&servaddr, sizeof(servaddr)) == -1)
         error_handling("connect() error");
 
-    while (1) {
     memset(buf, 0, MAXBUF);
-    sread = read(fp, buf, MAXBUF);
-    send(sock, buf, sread, 0);
+    strcpy(buf, argv[3]);
+    filenamesize = strlen(buf);
+    buf[filenamesize] = '\0';
+    send(sock, buf, filenamesize+1, 0);
 
+    if((fp = open(buf, O_RDONLY)) == -1)
+    {
+        printf("open failed");
+        exit(0);
+    }
+    while(1){
+        memset(buf, 0, MAXBUF);
+        sread = read(fp, buf, MAXBUF);
+        send(sock, buf, sread, 0);
     if(sread == 0){
         break;
-       }
     }
+}
+
+
 }
 void error_handling(char* message) {
         fputs(message, stderr);
