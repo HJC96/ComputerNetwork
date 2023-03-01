@@ -5,4 +5,4 @@ MySmtp_Client.o:MySmtp_Client.h MySmtp_Client.cpp
 main.o : MySmtp_Client.h main.cpp
 	g++ -c main.cpp
 clean:
-	rm -f *.o MySmtp
+	rm -f *.o MySmtp_Client
