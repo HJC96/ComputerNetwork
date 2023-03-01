@@ -44,53 +44,76 @@ int MySmtp_Client::ConnectSocket()
 void MySmtp_Client::SendEmail(string subject, string data)
 {
     int ret;
-    char buffer[256];
+    char rcv_buffer[256];
+    char send_buffer[256];
     
-    memset(&buffer,0,sizeof(buffer));
-    printf("Send %d bytes\n",ret);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
-    ret = send(ClientSocket, "EHLO Hi\r\n",strlen("EHLO Hi\r\n"), 0);
+    memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
+    memset((char*)&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"EHLO Hi Server\r\n");
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0); // 3rd param not sizeof but strlen
     
-    memset(&buffer,0,sizeof(buffer));
-    ret = send(ClientSocket, "AUTH LOGIN\r\n",strlen("AUTH LOGIN\r\n"), 0);
-    printf("Send %d bytes\n",ret);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"AUTH LOGIN\r\n");
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
 
-    memset(&buffer,0,sizeof(buffer));
-    ret = send(ClientSocket, "aGpj\r\n",strlen("aGpj\r\n"), 0);
-    printf("Send %d bytes\n",ret);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"aGpj\r\n"); // base64
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
 
-    memset(&buffer,0,sizeof(buffer));
-    ret = send(ClientSocket, "Y2tzMTQ3\r\n",strlen("Y2tzMTQ3\r\n"), 0);
-    printf("Send %d bytes\n",ret);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"Y2tzMTQ3\r\n");
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
+    
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"mail from:<hjc@mysmtp>\r\n");
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
 
-    memset(&buffer,0,sizeof(buffer));
-    ret = send(ClientSocket, "mail from:<hjc@mysmtp>\r\n",strlen("mail from:<hjc@mysmtp>\r\n"), 0);
-    printf("Send %d bytes\n",ret);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"RCPT TO:<gkswlcjs2@naver.com>\r\n");
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
 
-    ret = send(ClientSocket, "RCPT TO:<gkswlcjs2@naver.com>\r\n",strlen("RCPT TO:<gkswlcjs2@naver.com>\r\n"), 0);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"DATA\r\n");
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
 
-    ret = send(ClientSocket, "DATA\r\n",strlen("DATA\r\n"), 0);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),     "To:gkswlcjs2@naver.com\nFrom:hjc@hjc\nSubject:%s\n\n%s\r\n",subject.c_str(), data.c_str());
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
 
-    ret = send(ClientSocket, "To:gkswlcjs2@naver.com\nFrom:hjc@hjc\nSubject:This is me\n\nNice To Meet you\r\n",strlen("To:gkswlcjs2@naver.com\nFrom:hjc@hjc\nSubject:This is me\n\nNice To Meet you\r\n"), 0);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
+    memset(&rcv_buffer,0,sizeof(rcv_buffer));
+    memset(&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),".\r\n");
+    ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
+    recv(ClientSocket, rcv_buffer, 256, 0);
+    printf("%s", rcv_buffer);
 
-    ret = send(ClientSocket, ".\r\n",strlen(".\r\n"), 0);
-    recv(ClientSocket, buffer, 256, 0);
-    printf("%s", buffer);
 
+}
 
+int MySmtp_Client::CloseSocket()
+{
+    close(ClientSocket);
 }
