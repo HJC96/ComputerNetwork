@@ -58,14 +58,14 @@ int main()
 
 
     memset(&buffer,0,sizeof(buffer));
-    ret = send(client_socket, "mail from:<hjc@hjc>\r\n",strlen("mail from:<hjc@hjc>\r\n"), 0);
+    ret = send(client_socket, "mail from:<hjc@mysmtp>\r\n",strlen("mail from:<hjc@mysmtp>\r\n"), 0);
     printf("Send %d bytes\n",ret);
 
     recv(client_socket, buffer, 256, 0);
     printf("%s", buffer);
 
 
-    ret = send(client_socket, "RCPT TO:<jchanvvv@gmail.com>\r\n",strlen("RCPT TO:<jchanvvv@gmail.com>\r\n"), 0);
+    ret = send(client_socket, "RCPT TO:<gkswlcjs2@naver.com>\r\n",strlen("RCPT TO:<gkswlcjs2@naver.com>\r\n"), 0);
     recv(client_socket, buffer, 256, 0);
     printf("%s", buffer);
 
@@ -73,10 +73,15 @@ int main()
     recv(client_socket, buffer, 256, 0);
     printf("%s", buffer);
 
-
-    ret = send(client_socket, "To:<jchanvvv@gmail.com>\nFrom:<hjc@hjc>\nSubject:Hi\n\nNice To Meet you\r\n.\r\n",strlen("To:<jchanvvv@gmail.com>\nFrom:<hjc@hjc>\nSubject:Hi\r\n\r\nNice To Meet you\r\n.\r\n"), 0);
+    //ret = send(client_socket, "nice to meet you\r\n",strlen("nice to meet you\r\n"), 0);
+    ret = send(client_socket, "To:gkswlcjs2@naver.com\nFrom:hjc@hjc\nSubject:This is me\n\nNice To Meet you\r\n",strlen("To:gkswlcjs2@naver.com\nFrom:hjc@hjc\nSubject:This is me\n\nNice To Meet you\r\n"), 0);
     recv(client_socket, buffer, 256, 0);
     printf("%s", buffer);
+
+    ret = send(client_socket, ".\r\n",strlen(".\r\n"), 0);
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
+
 }
 
 
