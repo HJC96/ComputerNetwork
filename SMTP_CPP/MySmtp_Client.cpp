@@ -98,10 +98,11 @@ void MySmtp_Client::SendEmail(string subject, string data)
 
     memset(&rcv_buffer,0,sizeof(rcv_buffer));
     memset(&send_buffer,0,sizeof(send_buffer));
-    snprintf(send_buffer,sizeof(send_buffer),     "To:gkswlcjs2@naver.com\nFrom:hjc@hjc\nSubject:%s\n\n%s\r\n",subject.c_str(), data.c_str());
+    snprintf(send_buffer,sizeof(send_buffer),     "From:hjc@hjc\nTo:gkswlcjs2@naver.com\nSubject:%s\n\n%s\r\n",subject.c_str(), data.c_str());
     ret = send(ClientSocket, (char*)send_buffer,strlen(send_buffer), 0);
     recv(ClientSocket, rcv_buffer, 256, 0);
     printf("%s", rcv_buffer);
+    cout << send_buffer;
 
     memset(&rcv_buffer,0,sizeof(rcv_buffer));
     memset(&send_buffer,0,sizeof(send_buffer));
@@ -115,5 +116,5 @@ void MySmtp_Client::SendEmail(string subject, string data)
 
 int MySmtp_Client::CloseSocket()
 {
-    close(ClientSocket);
+    return close(ClientSocket);
 }
