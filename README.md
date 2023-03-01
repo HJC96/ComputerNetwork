@@ -25,3 +25,15 @@
 6. 파일은 아스키, 바이너리 모두 지원해야한다.
 
 ## 소켓 프로그래밍 3 (TCP server, client) 
+
+
+## SMTP_C 
+
+SMTP 클라이언트 프로그램을 C언어로 구현한 것입니다.
+
+## SMTP_CPP
+
+SMTP 클라이언트 프로그램을 C++언어로 구현한 것입니다.
+<img width="1194" alt="스크린샷 2023-03-01 오후 8 59 11" src="https://user-images.githubusercontent.com/87226129/222134123-ed8d3937-ffe7-4cdb-b44a-576029669a79.png">
+
+
