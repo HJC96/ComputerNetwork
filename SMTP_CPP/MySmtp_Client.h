@@ -3,10 +3,12 @@
 #include <vector>
 #include <sys/socket.h>
 
-class email
+
+class MySmtp_Client
 {
     public:
-        email();
-        ~email();
+        MySmtp_Client();
+        ~MySmtp_Client();
         int SendEmail(void);
+
 };
