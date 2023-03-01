@@ -14,21 +14,14 @@ int main()
 {
     int client_socket;
     struct sockaddr sock_addr;
-    //const char* msg = "MAIL FROM:<gkswlcjs2@naver.com>\r\n"; // According to the SMTP spec, added <CR><LF> 
-    //const char* msg2 = "RCPT TO:<jchanvvv@gmail.com>\r\n";
-    const char* msg3 = "To:<jchanvvv@gmail.com>\nFrom:<hjc@hjc>\nSubject:Hi\r\n\r\nNice To Meet you\r\n.\r\n";
-    struct msghdr mh;
 	char buffer[2048];
 
     int ret = 0;
 
-    memset(&mh, 0, sizeof(mh));
-
-    //*(char*)&mh.msg_name = *msg;
     memset(&sock_addr, 0, sizeof(sock_addr));
     sock_addr.sa_family = AF_INET;                                          // UDP, TCP, ETC
     *(unsigned short*)&sock_addr.sa_data[0] = htons(25);                    // htons(),htonl():'host'to'network'short/long \ port: 25 
-    *(unsigned long*)&sock_addr.sa_data[2] = htonl(3232235528);             //  "192.168.0.8" smtp.gmail.com
+    *(unsigned long*)&sock_addr.sa_data[2] = htonl(3232235528);             //  "192.168.0.8"
     
     
     client_socket = socket(AF_INET, SOCK_STREAM, 0); // domain, type, protocol
