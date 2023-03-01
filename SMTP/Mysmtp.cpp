@@ -13,7 +13,7 @@ int main()
     struct sockaddr sock_addr;
     //const char* msg = "MAIL FROM:<gkswlcjs2@naver.com>\r\n"; // According to the SMTP spec, added <CR><LF> 
     //const char* msg2 = "RCPT TO:<jchanvvv@gmail.com>\r\n";
-
+    const char* msg3 = "To:<jchanvvv@gmail.com>\nFrom:<hjc@hjc>\nSubject:Hi\r\n\r\nNice To Meet you\r\n.\r\n";
     struct msghdr mh;
 	char buffer[2048];
 
@@ -44,24 +44,39 @@ int main()
     recv(client_socket, buffer, 256, 0);
     printf("%s", buffer);
 
-    //memset(&buffer,0,sizeof(buffer));
-    // ret = send(client_socket, "mail from:<gkswlcjs2@naver.com>\r\n",sizeof("mail from:<gkswlcjs2@naver.com>\r\n"), 0);
-    // printf("Send %d bytes\n",ret);
+    memset(&buffer,0,sizeof(buffer));
+    ret = send(client_socket, "aGpj\r\n",strlen("aGpj\r\n"), 0);
+    printf("Send %d bytes\n",ret);
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
 
-    // recv(client_socket, buffer, 256, 0);
-    // printf("%s", buffer);
-
-
-    // //sleep(1);
-    // ret = send(client_socket, "RCPT TO:<jchanvvv@gmail.com>\r\n",sizeof("RCPT TO:<jchanvvv@gmail.com>\r\n"), 0);
-    // recv(client_socket, buffer, 256, 0);
-    // printf("%s", buffer);
-
-    // ret = send(client_socket, "DATA\r\n",sizeof("DATA\r\n"), 0);
-    // recv(client_socket, buffer, 256, 0);
-    // printf("%s", buffer);
+    memset(&buffer,0,sizeof(buffer));
+    ret = send(client_socket, "Y2tzMTQ3\r\n",strlen("Y2tzMTQ3\r\n"), 0);
+    printf("Send %d bytes\n",ret);
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
 
 
+    memset(&buffer,0,sizeof(buffer));
+    ret = send(client_socket, "mail from:<hjc@hjc>\r\n",strlen("mail from:<hjc@hjc>\r\n"), 0);
+    printf("Send %d bytes\n",ret);
+
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
+
+
+    ret = send(client_socket, "RCPT TO:<jchanvvv@gmail.com>\r\n",strlen("RCPT TO:<jchanvvv@gmail.com>\r\n"), 0);
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
+
+    ret = send(client_socket, "DATA\r\n",strlen("DATA\r\n"), 0);
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
+
+
+    ret = send(client_socket, "To:<jchanvvv@gmail.com>\nFrom:<hjc@hjc>\nSubject:Hi\n\nNice To Meet you\r\n.\r\n",strlen("To:<jchanvvv@gmail.com>\nFrom:<hjc@hjc>\nSubject:Hi\r\n\r\nNice To Meet you\r\n.\r\n"), 0);
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
 }
 
 
@@ -73,3 +88,7 @@ void error_msg(const char* msg)
 }
 
 //RCPT TO:<jchanvvv@gmail.com>
+
+
+// aGpj
+//Y2tzMTQ3
