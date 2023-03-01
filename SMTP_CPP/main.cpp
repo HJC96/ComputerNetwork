@@ -17,7 +17,7 @@ int main()
     
     if(smtp_client.ConnectSocket() == -1)
         error_msg(connect_err);
-    smtp_client.SendEmail("Subject", "message"); //  type subject and message
+    smtp_client.SendEmail("MySMTPClient Send Message", "Data"); //  type subject and message
 
     if(smtp_client.CloseSocket() == -1) // domain, type, protocol
         error_msg(close_err);
