@@ -24,8 +24,8 @@ int main()
     //*(char*)&mh.msg_name = *msg;
     memset(&sock_addr, 0, sizeof(sock_addr));
     sock_addr.sa_family = AF_INET;                                          // UDP, TCP, ETC
-    *(unsigned short*)&sock_addr.sa_data[0] = htons(587);                    // htons(),htonl():'host'to'network'short/long \ port: 2byte, ip:4byte, else 0 , 465: 587:TLS 
-    *(unsigned long*)&sock_addr.sa_data[2] = htonl(1823571308);             //  "108.177.125.108" smtp.gmail.com
+    *(unsigned short*)&sock_addr.sa_data[0] = htons(25);                    // htons(),htonl():'host'to'network'short/long \ port: 25 
+    *(unsigned long*)&sock_addr.sa_data[2] = htonl(3232235528);             //  "192.168.0.8" smtp.gmail.com
     
     
     client_socket = socket(AF_INET, SOCK_STREAM, 0); // domain, type, protocol
@@ -33,23 +33,18 @@ int main()
         error_msg(connect_err);
 
     
-    recv(client_socket, buffer, 256, 0);
-    printf("%s", buffer);
-    ret = send(client_socket, "EHLO smtp.google.com\r\n",sizeof("HELO smtp.google.com\r\n"), 0);
-    printf("Send %d bytes\n",ret);
-
-    recv(client_socket, buffer, 512, 0);
-    printf("%s", buffer);
-
-    ret = send(client_socket, "STARTTLS\r\n",sizeof("STARTTLS\r\n"), 0);
+    ret = send(client_socket, "EHLO Hi\r\n",strlen("EHLO Hi\r\n"), 0); // 3nd param not sizeof but strlen (sizeof로 했을때, 마지막'0'이 남아았이서 오류가 떴던 것)
     printf("Send %d bytes\n",ret);
     recv(client_socket, buffer, 256, 0);
     printf("%s", buffer);
 
-    // ret = send(client_socket, "AUTH LOGIN\r\n",sizeof("AUTH LOGIN\r\n"), 0);
-    // recv(client_socket, buffer, 512, 0);
-    // printf("%s", buffer);
+    memset(&buffer,0,sizeof(buffer));
+    ret = send(client_socket, "AUTH LOGIN\r\n",strlen("AUTH LOGIN\r\n"), 0);
+    printf("Send %d bytes\n",ret);
+    recv(client_socket, buffer, 256, 0);
+    printf("%s", buffer);
 
+    //memset(&buffer,0,sizeof(buffer));
     // ret = send(client_socket, "mail from:<gkswlcjs2@naver.com>\r\n",sizeof("mail from:<gkswlcjs2@naver.com>\r\n"), 0);
     // printf("Send %d bytes\n",ret);
 
