@@ -15,7 +15,5 @@ class Client
         unsigned short port;
         unsigned long ip;
 
-    
-
 
 };

@@ -1,6 +1,13 @@
 #include "Client.h"
 
-int main(int argc, char* argv[])
+Client::Client()
 {
-    return 0;
+
 }
+
+Client::~Client()
+{
+
+}
+
+
