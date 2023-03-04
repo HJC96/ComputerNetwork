@@ -17,18 +17,17 @@ int main(int argc, char* argv[])
     {
         check_port(argc);
         pt = string(argv[1]);
-
     }
     catch(const exception& e)
     {
         cerr << e.what() << '\n';
         pt = to_string(DEFAULT_PORT);
     }  
-        Server* my_server = new Server;                   // 객체를 5개? 아니면 객체 하나에 스레드 다섯개? 후자가 맞는듯.
-        my_server->SetNetwork(AF_INET);    
-        my_server->SetIP(htonl(3232235528));              // "192.168.0.8" 
-        my_server->SetPort(stoi(pt));                // htons(),htonl():'host'to'network'short/long \ port: 25 
-        my_server->CreateSocket(AF_INET, SOCK_STREAM, 0); // domain, type, protocol
+    Server* my_server = new Server;                     // 객체를 5개? 아니면 객체 하나에 스레드 다섯개? 후자가 맞는듯.
+    my_server->SetNetwork(AF_INET);    
+    my_server->SetIP(htonl(INADDR_ANY));                // INADDR_ANY: 컴퓨터에 존재하는 랜카드 주소 중 사용가능한것을 사용하라
+    my_server->SetPort(stoi(pt));                       // htons(),htonl():'host'to'network'short/long \ port: 25 
+    my_server->CreateSocket(AF_INET, SOCK_STREAM, 0);   // domain, type, protocol
     
     
 
