@@ -5,7 +5,14 @@
 #define MAX_CLIENT 3
 void check_port(int argc);
 void error_msg(const char* msg);
-void *runner(void* data);
+void *client_req_handler(void* data);
+
+// class sock_data
+// {
+//     public:
+
+//         int fd;
+// };
 
 
 
@@ -30,28 +37,46 @@ int main(int argc, char* argv[])
     my_server->CreateSocket(AF_INET, SOCK_STREAM, 0);   // domain, type, protocol
     if(my_server->BindSocket()==-1)    error_msg("Bind Error");
     if(my_server->ListenSocket(MAX_CLIENT)==-1) error_msg("Listen Error"); // MAX_CLIENT 수 만큼 큐에서 대기
-    if((clnt_sock = my_server->AcceptSocket())==-1)  error_msg("Accept Error");
+    
+    while(1)
+    {
+        pthread_t tid; /* the thread identifier */
+        int i=1;
+        if((clnt_sock=my_server->AcceptSocket())==-1) error_msg("Acceot Error"); // MAX_CLIENT 수 만큼 큐에서 대기
+        pthread_create(&tid, NULL, client_req_handler,(void*)&i);
+        /*
+            Task To do
+            구조 -> main에서 반복문을 돌면서 accept를 받고, 그걸 스레드에 넘겨줘서 처리하게 한다.
+            1. 스레드로 클라이언트의 리퀘스트 실행하기
+             1.1 함수명 변경필요.
+             1.2 전달해줄 구조체 혹은 클래스 생성 필요
+              1.2.1 구조체 내용은 ip주소, Accept로 받은 clnt_sock 주소
+            2. 리퀘스트 처리하는 스레드로 넘어간 이후는 detach를 해준다.
+             2.1 왜 detach가 필요한지 공부필요
+              2.1.1 어떤 역할을 하는지도. join을 안해주면 좀비프로세스나 고아 프로세스의 가능성이 있음.
+            3. 리팩토링
+        */
+    }
+
+    //if((clnt_sock = my_server->AcceptSocket())==-1)  error_msg("Accept Error");
 
     
-    int ret;
-    char rcv_buffer[256];
-    char send_buffer[256];
+    // int ret;
+    // char rcv_buffer[256];
+    // char send_buffer[256];
 
 
-    pthread_t tid; /* the thread identifier */
-    int i=1;
-    pthread_create(&tid, NULL, runner,(void*)&i);
 
 
-    memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
-    memset((char*)&send_buffer,0,sizeof(send_buffer));
-    snprintf(send_buffer,sizeof(send_buffer),"Hi~");
-    recv(clnt_sock, rcv_buffer, 256, 0);
-    printf("%s", rcv_buffer);
-    ret = send(my_server->GetSocket(), (char*)send_buffer,strlen(send_buffer), 0); // 3rd param not sizeof but strlen
+
+    // memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
+    // memset((char*)&send_buffer,0,sizeof(send_buffer));
+    // snprintf(send_buffer,sizeof(send_buffer),"Hi~");
+    // recv(clnt_sock, rcv_buffer, 256, 0);
+    // printf("%s", rcv_buffer);
+    // ret = send(my_server->GetSocket(), (char*)send_buffer,strlen(send_buffer), 0); // 3rd param not sizeof but strlen
 
     
-    while(1);                                          // main함수가 종료되는 것을 방지
 
     
 
@@ -60,7 +85,7 @@ int main(int argc, char* argv[])
 }
 
 
-void *runner(void* data)
+void *client_req_handler(void* data)
 {
     printf("Hello This is Thread No %d\n", *((int*)data));
     pthread_exit(0);
