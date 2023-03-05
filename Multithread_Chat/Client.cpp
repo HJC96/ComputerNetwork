@@ -23,3 +23,12 @@ void Client::CreateSocket(int domain, int type, int protocol)
     ClientSocket = socket(domain, type, 0);
 
 }
+
+int Client::ConnectSocket()
+{
+    return connect(ClientSocket, &sock_addr, sizeof(sock_addr));
+}
+int Client::CloseSocket() 
+{
+
+} 

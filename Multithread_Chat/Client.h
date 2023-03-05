@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/ip.h> /* superset of previous */
@@ -17,7 +18,6 @@ class Client
         void SetIP(unsigned long ip);
         void CreateSocket(int domain, int type, int protocol);
         int ConnectSocket();
-        void SendEmail(string subject, string data);
         int CloseSocket();    
     private:
         int _internetwork;

@@ -22,13 +22,20 @@ void Server::CreateSocket(int domain, int type, int protocol)
     ServerSocket = socket(domain, type, 0);
 
 }
+
 int Server::BindSocket()
 {
-    return 0;
+    return bind(ServerSocket, &sock_addr, (socklen_t)sizeof(sock_addr));
 }
+
+int Server::ListenSocket(int backlog)
+{
+    return listen(ServerSocket,backlog);
+}
+
 int Server::AcceptSocket()
 {
-    return 0;
+    return accept(ServerSocket, &sock_addr, (socklen_t*)sock_addr.sa_data);
 }
 int Server::CloseSocket()
 {
