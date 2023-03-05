@@ -6,6 +6,7 @@
 #include <netinet/ip.h> /* superset of previous */
 #include <unistd.h>
 #include <stdexcept>
+#include <thread>
 
 using namespace std;
 class Server
@@ -17,6 +18,7 @@ class Server
         void SetPort(unsigned short port);
         void SetIP(unsigned long ip);
         void CreateSocket(int domain, int type, int protocol);
+        int GetSocket();
         int BindSocket();
         int ListenSocket(int backlog);
         int AcceptSocket();

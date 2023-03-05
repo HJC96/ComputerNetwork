@@ -33,7 +33,21 @@ int main(int argc, char* argv[])
     if(my_client->ConnectSocket() == -1) error_msg("Connect err");
 
     
+    int ret;
+    char rcv_buffer[256];
+    char send_buffer[256];
+
+
+    memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
+    memset((char*)&send_buffer,0,sizeof(send_buffer));
+    snprintf(send_buffer,sizeof(send_buffer),"EHLO Hi Server\r\n");
+    //recv(my_client->GetSocket(), rcv_buffer, 256, 0);
+    //printf("%s", rcv_buffer);
+    ret = send(my_client->GetSocket(), (char*)send_buffer,strlen(send_buffer), 0); // 3rd param not sizeof but strlen
+    //recv(my_client->GetSocket(), rcv_buffer, 256, 0);
+    //printf("%s", rcv_buffer);
     
+
     return 0;
 }
 
@@ -66,8 +80,6 @@ unsigned long String2IPAddr(string str_ip)
         str_ip.erase(0,pos+1);
     }
     
-    // for(auto mod:token)
-    //     cout << mod<<endl;
     ip |= stoi(token[0]) << 24;
     ip |= stoi(token[1]) << 16;
     ip |= stoi(token[2]) << 8;

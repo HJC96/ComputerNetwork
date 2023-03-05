@@ -21,8 +21,8 @@ void Client::CreateSocket(int domain, int type, int protocol)
     *(unsigned long*)&sock_addr.sa_data[2] = _ip;                                 //  "192.168.0.8" 
     
     ClientSocket = socket(domain, type, 0);
-
 }
+int Client::GetSocket() { return ClientSocket;}
 
 int Client::ConnectSocket()
 {
@@ -30,5 +30,5 @@ int Client::ConnectSocket()
 }
 int Client::CloseSocket() 
 {
-
+    return 0;
 } 

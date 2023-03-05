@@ -17,6 +17,7 @@ class Client
         void SetPort(unsigned short port);
         void SetIP(unsigned long ip);
         void CreateSocket(int domain, int type, int protocol);
+        int GetSocket();
         int ConnectSocket();
         int CloseSocket();    
     private:

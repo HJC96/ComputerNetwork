@@ -23,6 +23,9 @@ void Server::CreateSocket(int domain, int type, int protocol)
 
 }
 
+int Server::GetSocket() { return ServerSocket;}
+
+
 int Server::BindSocket()
 {
     return bind(ServerSocket, &sock_addr, (socklen_t)sizeof(sock_addr));
