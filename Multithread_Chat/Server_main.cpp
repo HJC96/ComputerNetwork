@@ -1,9 +1,11 @@
 #include "Server.h"
+#include <pthread.h>
 
 #define DEFAULT_PORT 25
 #define MAX_CLIENT 3
 void check_port(int argc);
 void error_msg(const char* msg);
+void *runner(void* data);
 
 
 
@@ -36,6 +38,11 @@ int main(int argc, char* argv[])
     char send_buffer[256];
 
 
+    pthread_t tid; /* the thread identifier */
+    int i=1;
+    pthread_create(&tid, NULL, runner,(void*)&i);
+
+
     memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
     memset((char*)&send_buffer,0,sizeof(send_buffer));
     snprintf(send_buffer,sizeof(send_buffer),"Hi~");
@@ -52,6 +59,12 @@ int main(int argc, char* argv[])
 
 }
 
+
+void *runner(void* data)
+{
+    printf("Hello This is Thread No %d\n", *((int*)data));
+    pthread_exit(0);
+}
 
 
 
