@@ -32,22 +32,29 @@ int main(int argc, char* argv[])
 
     if(my_client->ConnectSocket() == -1) error_msg("Connect err");
 
-    
-    int ret;
-    char rcv_buffer[256];
+        
+    //int ret;
+    //char rcv_buffer[256];
     char send_buffer[256];
 
 
-    memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
     memset((char*)&send_buffer,0,sizeof(send_buffer));
     snprintf(send_buffer,sizeof(send_buffer),"EHLO Hi Server\r\n");
     //recv(my_client->GetSocket(), rcv_buffer, 256, 0);
     //printf("%s", rcv_buffer);
-    ret = send(my_client->GetSocket(), (char*)send_buffer,strlen(send_buffer), 0); // 3rd param not sizeof but strlen
-    //recv(my_client->GetSocket(), rcv_buffer, 256, 0);
-    //printf("%s", rcv_buffer);
-    
+    //ret = send(my_client->GetSocket(), (char*)send_buffer,strlen(send_buffer), 0); // 3rd param not sizeof but strlen
+    while(1)
+    {
+    char rcv_buffer[256];
+    memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
 
+    recv(my_client->GetSocket(), rcv_buffer, 256, 0);
+    cout << "받은 메시지: ";
+    printf("%s", rcv_buffer);
+    cout << endl;
+    //send(my_client->GetSocket(), (char*)send_buffer,strlen(send_buffer), 0);
+    }
+    
     return 0;
 }
 

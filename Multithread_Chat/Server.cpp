@@ -28,7 +28,7 @@ int Server::GetSocket() { return ServerSocket;}
 
 int Server::BindSocket()
 {
-    return bind(ServerSocket, &sock_addr, (socklen_t)sizeof(sock_addr));
+    return ::bind(ServerSocket, &sock_addr, (socklen_t)sizeof(sock_addr)); // not using std::bind but using bind from <thread> 
 }
 
 int Server::ListenSocket(int backlog)
