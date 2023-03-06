@@ -30,5 +30,5 @@ int Client::ConnectSocket()
 }
 int Client::CloseSocket() 
 {
-    return 0;
+    return close(ClientSocket);
 } 
