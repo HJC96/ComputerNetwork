@@ -1,5 +1,4 @@
 #include "Server.h"
-//#include <pthread.h>
 
 #include "chat.h"
 #define DEFAULT_PORT "25"
@@ -22,7 +21,7 @@ int main(int argc, char* argv[])
     string pt;
     try
     {
-        check_port(argc);
+        check_port_server(argc);
         pt = string(argv[1]);
     }
     catch(const exception& e)
@@ -39,16 +38,14 @@ int main(int argc, char* argv[])
     if(my_server->BindSocket()==-1)    error_msg("Bind Error");
     if(my_server->ListenSocket(MAX_CLIENT)==-1) error_msg("Listen Error");      // MAX_CLIENT 수 만큼 큐에서 대기
     
-    while(1)
-    {
-        
-        if((clnt_sock=my_server->AcceptSocket())==-1) error_msg("Accept Error"); // MAX_CLIENT 수 만큼 큐에서 대기
-        sock_data sd;
-        sd.clientsock = clnt_sock ;
-        sd.server = my_server;
-        thread(client_req_handler, ref(sd)).detach();
-    }
-    my_server->CloseSocket();
+       
+    if((clnt_sock=my_server->AcceptSocket())==-1) error_msg("Accept Error"); // MAX_CLIENT 수 만큼 큐에서 대기
+    sock_data sd;
+    sd.clientsock = clnt_sock ;
+    sd.server = my_server;
+    thread thd1(client_req_handler, ref(sd));
+    thd1.join();
+    //my_server->CloseSocket();
 
 }
 
@@ -60,9 +57,12 @@ void client_req_handler(sock_data sd)
     {    
         char send_buffer[256];
         cin.getline(send_buffer, sizeof(send_buffer),'\n');
+        if(!strcmp(send_buffer,"quit"))
+            break;
         cout << "[You Sended]: " <<send_buffer << endl;
         send(sd.clientsock, send_buffer,strlen(send_buffer), 0);
     }
+    sd.server->CloseSocket();
 
 }
 
@@ -70,16 +70,15 @@ void client_req_handler(sock_data sd)
 
 void recv_message(sock_data sd)
 {
-    while(1)
+    char rcv_buffer[256];
+    while(recv(sd.clientsock, rcv_buffer, 256, 0)>0)
     {    
-        char rcv_buffer[256];
-        memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
-
-        recv(sd.clientsock, rcv_buffer, 256, 0);
+        if(!strcmp(rcv_buffer,"quit"))
+            break;        
         cout << "[You Received]: ";
-        
         printf("%s", rcv_buffer);
         cout << endl;
+        memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
     }
 
 }

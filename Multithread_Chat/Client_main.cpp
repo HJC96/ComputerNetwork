@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
     string ip;
     try
     {
-        check_port(argc);
+        check_port_client(argc);
         ip = string(argv[1]);
         pt = string(argv[2]);
     }
@@ -32,17 +32,17 @@ int main(int argc, char* argv[])
 
 
     thread(send_message, ref(my_client)).detach();
-    while(1)
-    {
-        char rcv_buffer[256];
-        memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
 
-        recv(my_client->GetSocket(), rcv_buffer, 256, 0);
+    char rcv_buffer[256];
+    while(recv(my_client->GetSocket(), rcv_buffer, 256, 0)>0)
+    {
         cout << "[You Received]: ";
-    
         printf("%s", rcv_buffer);
         cout << endl;
-    }
+        memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
+    
+
+        }
     return 0;
 }
 
@@ -55,14 +55,10 @@ void send_message(Client* my_client)
     {    
         char send_buffer[256];
         cin.getline(send_buffer, sizeof(send_buffer),'\n');
+        if(!strcmp(send_buffer,"quit"))
+            break;
         cout << "[You Sended]: " <<send_buffer << endl;
-
         send(my_client->GetSocket(), send_buffer,strlen(send_buffer), 0);
-        if(send_buffer[0] == 'q')
-        {
-            my_client->CloseSocket();
-
-        }
     }
-
+    my_client->CloseSocket();
 }

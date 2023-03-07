@@ -3,7 +3,8 @@
 #define DEFAULT_PORT "25"
 #define DEFAULT_IP   "127.0.0.1"
 
-void check_port(int argc);
+void check_port_client(int argc);
+void check_port_server(int argc);
 void error_msg(const char* msg);
 unsigned long String2IPAddr(string str_ip);
 
@@ -16,13 +17,22 @@ void error_msg(const char* msg)
     exit(1);
 }
 
-void check_port(int argc)
+void check_port_client(int argc)
 {
     char error[128];
     memset(error,0,sizeof(error));
-    snprintf(error,sizeof(error),"PLEASE ENTER YOUR IP AND PORT NUMBER, DEFAULT IP NUMNER IS %s AND PORT NUMBER IS %s",DEFAULT_IP, DEFAULT_PORT);
+    snprintf(error,sizeof(error),"PLEASE RE-ENTER YOUR IP AND PORT NUMBER, DEFAULT IP NUMNER IS %s AND PORT NUMBER IS %s",DEFAULT_IP, DEFAULT_PORT);
 
     if(argc != 3) throw domain_error(error);
+}
+
+void check_port_server(int argc)
+{
+    char error[128];
+    memset(error,0,sizeof(error));
+    snprintf(error,sizeof(error),"PLEASE RE-ENTER YOUR PORT NUMBER, DEFAULT IP NUMNER IS %s AND PORT NUMBER IS %s",DEFAULT_IP, DEFAULT_PORT);
+
+    if(argc != 2) throw domain_error(error);
 }
 
 unsigned long String2IPAddr(string str_ip)
