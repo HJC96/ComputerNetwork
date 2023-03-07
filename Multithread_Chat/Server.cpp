@@ -40,9 +40,9 @@ int Server::AcceptSocket()
 {
     return accept(ServerSocket, &sock_addr, (socklen_t*)sock_addr.sa_data);
 }
-int Server::CloseSocket() 
+int Server::CloseSocket(int sock) 
 {
-    return close(ServerSocket);
+    return close(sock);
 }
 
 

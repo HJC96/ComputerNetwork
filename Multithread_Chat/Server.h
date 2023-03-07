@@ -22,7 +22,7 @@ class Server
         int BindSocket();
         int ListenSocket(int backlog);
         int AcceptSocket();
-        int CloseSocket();
+        int CloseSocket(int sock);
         
     private:
         int _internetwork;

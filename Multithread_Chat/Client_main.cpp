@@ -40,9 +40,7 @@ int main(int argc, char* argv[])
         printf("%s", rcv_buffer);
         cout << endl;
         memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
-    
-
-        }
+    }
     return 0;
 }
 

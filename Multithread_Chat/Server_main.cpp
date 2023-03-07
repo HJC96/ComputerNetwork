@@ -2,7 +2,7 @@
 
 #include "chat.h"
 #define DEFAULT_PORT "25"
-#define MAX_CLIENT 3
+#define MAX_CLIENT 0
 
 class sock_data
 {
@@ -43,26 +43,29 @@ int main(int argc, char* argv[])
     sock_data sd;
     sd.clientsock = clnt_sock ;
     sd.server = my_server;
-    thread thd1(client_req_handler, ref(sd));
+    thread thd1(recv_message, ref(sd));
+    
     thd1.join();
-    //my_server->CloseSocket();
+    my_server->CloseSocket(my_server->GetSocket());
 
 }
 
 
 void client_req_handler(sock_data sd)
 {
-    thread(recv_message, ref(sd)).detach();
     while(1)
     {    
         char send_buffer[256];
         cin.getline(send_buffer, sizeof(send_buffer),'\n');
         if(!strcmp(send_buffer,"quit"))
+        {
             break;
+        }
         cout << "[You Sended]: " <<send_buffer << endl;
         send(sd.clientsock, send_buffer,strlen(send_buffer), 0);
     }
-    sd.server->CloseSocket();
+    sd.server->CloseSocket(sd.clientsock); // 이거 그냥 socket close()로 쓰는게 나으려나? 굳이 앞에 sd.붙이고 뭐 할 필요가 있나? 너무 구질구질한가...
+    sd.server->CloseSocket(sd.server->GetSocket());
 
 }
 
@@ -71,6 +74,7 @@ void client_req_handler(sock_data sd)
 void recv_message(sock_data sd)
 {
     char rcv_buffer[256];
+    thread(client_req_handler, ref(sd)).detach();
     while(recv(sd.clientsock, rcv_buffer, 256, 0)>0)
     {    
         if(!strcmp(rcv_buffer,"quit"))
