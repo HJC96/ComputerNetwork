@@ -20,8 +20,8 @@ int main(int argc, char* argv[])
         pt = DEFAULT_PORT;
         ip = DEFAULT_IP;
     }  
-    Client* my_client = new Client;                                     // 객체를 5개? 아니면 객체 하나에 스레드 다섯개? 후자가 맞는듯.
-    my_client->SetIP(htonl(String2IPAddr(ip)));                         // stol not stoi                
+    Client* my_client = new Client;                                     // 
+    my_client->SetIP(htonl(String2IPAddr(ip)));                         // sto'l' not stoi                
     my_client->SetPort(htons(stoi(pt)));                                // htons(),htonl():'host'to'network'short/long \ port: 25 
     my_client->CreateSocket(AF_INET, SOCK_STREAM, 0);                   // domain, type, protocol
 
