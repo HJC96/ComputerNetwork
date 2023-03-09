@@ -15,7 +15,6 @@ void client_req_handler(sock_data sd);
 void recv_message(sock_data sd);
 
 
-
 int main(int argc, char* argv[])
 {
     string pt;
@@ -46,8 +45,9 @@ int main(int argc, char* argv[])
     thread thd1(recv_message, ref(sd));
     
     thd1.join();
+    //while(1);                                                                 // if you don't want main thread quit, then use while(1);    
     my_server->CloseSocket(my_server->GetSocket());
-
+    return 0;
 }
 
 
