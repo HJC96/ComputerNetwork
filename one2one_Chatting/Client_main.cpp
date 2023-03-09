@@ -58,5 +58,6 @@ void send_message(Client* my_client)
         cout << "[You Sended]: " <<send_buffer << endl;
         send(my_client->GetSocket(), send_buffer,strlen(send_buffer), 0);
     }
+    //shutdown(my_client->GetSocket(),SHUT_RDWR);
     my_client->CloseSocket();
 }

@@ -37,15 +37,16 @@ int main(int argc, char* argv[])
     if(my_server->BindSocket()==-1)    error_msg("Bind Error");
     if(my_server->ListenSocket(MAX_CLIENT)==-1) error_msg("Listen Error");      // MAX_CLIENT 수 만큼 큐에서 대기
     
-       
-    if((clnt_sock=my_server->AcceptSocket())==-1) error_msg("Accept Error");    // MAX_CLIENT 수 만큼 큐에서 대기
-    sock_data sd;
-    sd.clientsock = clnt_sock ;
-    sd.server = my_server;
-    thread thd1(recv_message, ref(sd));
+    while(1)
+    {    
+        if((clnt_sock=my_server->AcceptSocket())==-1) error_msg("Accept Error");    // MAX_CLIENT 수 만큼 큐에서 대기
+        sock_data sd;
+        sd.clientsock = clnt_sock ;
+        sd.server = my_server;
+        thread thd1(recv_message, ref(sd));
     
-    thd1.join();
-    //while(1);                                                                 // if you don't want main thread quit, then use while(1);    
+        thd1.join();
+    }
     my_server->CloseSocket(my_server->GetSocket());
     return 0;
 }
@@ -62,7 +63,8 @@ void client_req_handler(sock_data sd)
             break;
         }
         cout << "[You Sended]: " <<send_buffer << endl;
-        send(sd.clientsock, send_buffer,strlen(send_buffer), 0);
+        if(send(sd.clientsock, send_buffer,strlen(send_buffer), 0) == -1)     //send 할 소켓이 없다면, 연결 끊기.(자의적)
+            break;
     }
     sd.server->CloseSocket(sd.clientsock); 
     sd.server->CloseSocket(sd.server->GetSocket());
