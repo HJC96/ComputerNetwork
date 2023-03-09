@@ -41,6 +41,7 @@ int main(int argc, char* argv[])
         cout << endl;
         memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
     }
+    
     return 0;
 }
 
@@ -53,11 +54,11 @@ void send_message(Client* my_client)
     {    
         char send_buffer[256];
         cin.getline(send_buffer, sizeof(send_buffer),'\n');
+        send(my_client->GetSocket(), send_buffer,strlen(send_buffer), 0);
         if(!strcmp(send_buffer,"quit"))
             break;
         cout << "[You Sended]: " <<send_buffer << endl;
-        send(my_client->GetSocket(), send_buffer,strlen(send_buffer), 0);
     }
-    //shutdown(my_client->GetSocket(),SHUT_RDWR);
+    shutdown(my_client->GetSocket(),SHUT_WR); // half close
     my_client->CloseSocket();
 }

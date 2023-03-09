@@ -37,17 +37,14 @@ int main(int argc, char* argv[])
     if(my_server->BindSocket()==-1)    error_msg("Bind Error");
     if(my_server->ListenSocket(MAX_CLIENT)==-1) error_msg("Listen Error");      // MAX_CLIENT 수 만큼 큐에서 대기
     
-    while(1)
-    {    
-        if((clnt_sock=my_server->AcceptSocket())==-1) error_msg("Accept Error");    // MAX_CLIENT 수 만큼 큐에서 대기
-        sock_data sd;
-        sd.clientsock = clnt_sock ;
-        sd.server = my_server;
-        thread thd1(recv_message, ref(sd));
+    if((clnt_sock=my_server->AcceptSocket())==-1) error_msg("Accept Error");    // MAX_CLIENT 수 만큼 큐에서 대기
+    sock_data sd;
+    sd.clientsock = clnt_sock ;
+    sd.server = my_server;
+    thread thd1(recv_message, ref(sd));
     
-        thd1.join();
-    }
-    my_server->CloseSocket(my_server->GetSocket());
+    thd1.join();
+
     return 0;
 }
 
@@ -86,5 +83,5 @@ void recv_message(sock_data sd)
         cout << endl;
         memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
     }
-
+    sd.server->CloseSocket(sd.server->GetSocket());
 }
