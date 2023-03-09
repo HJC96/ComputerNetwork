@@ -64,7 +64,7 @@ void client_req_handler(sock_data sd)
         cout << "[You Sended]: " <<send_buffer << endl;
         send(sd.clientsock, send_buffer,strlen(send_buffer), 0);
     }
-    sd.server->CloseSocket(sd.clientsock); // 이거 그냥 socket close()로 쓰는게 나으려나? 굳이 앞에 sd.붙이고 뭐 할 필요가 있나? 너무 구질구질한가...
+    sd.server->CloseSocket(sd.clientsock); 
     sd.server->CloseSocket(sd.server->GetSocket());
 
 }
@@ -86,15 +86,3 @@ void recv_message(sock_data sd)
     }
 
 }
-/*
-        Task To do
-        구조 -> main에서 반복문을 돌면서 accept를 받고, 그걸 스레드에 넘겨줘서 처리하게 한다.
-        1. 스레드로 클라이언트의 리퀘스트 실행하기
-         1.1 함수명 변경필요.
-          1.2 전달해줄 구조체 혹은 클래스 생성 필요
-           1.2.1 구조체 내용은 ip주소, Accept로 받은 clnt_sock 주소
-        2. 리퀘스트 처리하는 스레드로 넘어간 이후는 detach를 해준다.
-         2.1 왜 detach가 필요한지 공부필요
-          2.1.1 어떤 역할을 하는지도. join을 안해주면 좀비프로세스나 고아 프로세스의 가능성이 있음.
-        3. 리팩토링
-*/
