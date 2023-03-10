@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     thread thd1(recv_message, ref(sd));
     
     thd1.join();
-
+    sd.server->CloseSocket(sd.server->GetSocket());
     return 0;
 }
 
@@ -64,7 +64,6 @@ void client_req_handler(sock_data sd)
             break;
     }
     sd.server->CloseSocket(sd.clientsock); 
-    sd.server->CloseSocket(sd.server->GetSocket());
 
 }
 
@@ -83,5 +82,4 @@ void recv_message(sock_data sd)
         cout << endl;
         memset((char*)&rcv_buffer,0,sizeof(rcv_buffer));
     }
-    sd.server->CloseSocket(sd.server->GetSocket());
 }
